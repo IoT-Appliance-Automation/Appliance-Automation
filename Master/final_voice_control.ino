@@ -20,6 +20,8 @@
 
 // Lamp pin
 const int lamp_pin = LED_BUILTIN;
+const char* host = "192.168.43.34";
+const char* host2 = "192.168.43.224";
 
 // WiFi parameters
 #define WLAN_SSID       "Bloodraven"
@@ -33,6 +35,9 @@ const int lamp_pin = LED_BUILTIN;
 
 // Functions
 void connect();
+void send_light_data(int data);
+void send_light_data2(int data);
+float get_temp();
 
 // Create an ESP8266 WiFiClient class to connect to the MQTT server.
 WiFiClient client;
@@ -51,7 +56,7 @@ WiFiClient client;
 //Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, AIO_SERVERPORT, MQTT_CLIENTID, MQTT_USERNAME, MQTT_PASSWORD);
 
 Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
-
+int cnt = 0;
 
 /****************************** Feeds ***************************************/
 
@@ -59,6 +64,8 @@ Adafruit_MQTT_Client mqtt(&client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO
 // Notice MQTT paths for AIO follow the form: <username>/feeds/<feedname>
 //const char LAMP_FEED[] PROGMEM = AIO_USERNAME "/feeds/data";
 Adafruit_MQTT_Subscribe lamp = Adafruit_MQTT_Subscribe(&mqtt, AIO_USERNAME "/feeds/data");
+Adafruit_MQTT_Publish temp = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/temperature");
+
 
 /*************************** Sketch Code ************************************/
 
@@ -108,9 +115,23 @@ void loop() {
       connect();
   }
 
+  char *va = (char *)lamp.lastread;
+  Serial.print("Before: ");
+  Serial.println(va);
   // this is our 'wait for incoming subscription packets' busy subloop
-  while (subscription = mqtt.readSubscription(100)) {
 
+  if (cnt % 5 == 0){
+      cnt=0;
+      float cel = get_temp();
+      if (! temp.publish(cel))
+          Serial.println(F("Failed to publish temperature"));
+      else
+          Serial.println(F("Temperature published!"));
+  }
+  cnt++;
+  
+  while (subscription = mqtt.readSubscription(3000)) {
+    Serial.println("Inside!!!");
     // we only care about the lamp events
     if (subscription == &lamp) {
 
@@ -119,39 +140,100 @@ void loop() {
       Serial.print("Received: ");
       Serial.println(value);
       int val = atoi(value);
-      if (val == 1)
-        digitalWrite(lamp_pin, LOW);
-      else if (val == 0)
-        digitalWrite(lamp_pin, HIGH);
-      
-//      if (value[0] == 'O'){
-//        if (value[1] == 'N'){
-//          digitalWrite(lamp_pin, LOW);
-//        }
-//      }
-//      else if (value[0] == '0'){
-//          digitalWrite(lamp_pin, HIGH);
-//      }
-//      
-      // Apply message to lamp
-//      String message = String(value);
-//      message.trim();
-//      if (message.charAt(0) == 'O'){
-//        if (message.charAt(1) == 'N'){
-//          digitalWrite(lamp_pin, LOW);
-//        }
-//        else if (message.charAt(1) == 'F'){
-//          digitalWrite(lamp_pin, LOW);
-//        }
-//      }
-//      if (message.startsWith("ON")) {digitalWrite(lamp_pin, HIGH);}
-//      else {digitalWrite(lamp_pin, LOW);} //(message == "OFF")
-
+      send_light_data(val);
+//      send_light_data2(val);
+      return;
     }
-
+        
   }
 
+  
+      
 }
+
+void send_light_data(int data)
+{
+  WiFiClient client;
+
+  Serial.printf("\n[Connecting to %s ... ", host);
+  if (client.connect(host, 80))
+  {
+    Serial.println("connected]");
+
+    Serial.println("[Sending a request]");
+    client.write(data);
+
+    client.stop();
+    Serial.println("\n[Disconnected]");
+  }
+  else
+  {
+    Serial.println("connection failed!]");
+    client.stop();
+  }
+//  delay(5000);
+}
+
+
+void send_light_data2(int data)
+{
+  WiFiClient client;
+
+  Serial.printf("\n[Connecting to %s ... ", host);
+  if (client.connect(host2, 80))
+  {
+    Serial.println("connected]");
+
+    Serial.println("[Sending a request]");
+    client.write(data);
+
+    client.stop();
+    Serial.println("\n[Disconnected]");
+  }
+  else
+  {
+    Serial.println("connection failed!]");
+    client.stop();
+  }
+//  delay(5000);
+}
+
+float get_temp()
+{
+  WiFiClient client;
+  float cel;
+  Serial.printf("\n[Connecting to %s ... ", host2);
+  if (client.connect(host2, 80))
+  {
+    Serial.println("connected]");
+
+    Serial.println("[Sending a request]");
+//    client.print("GIVE");
+//    cel = client.read();
+//    Serial.print("temp = ");
+//    Serial.println(cel);
+//    client.stop();
+//    Serial.println("\n[Disconnected]");
+    while (client.connected())
+    {
+      if (client.available())
+      {
+        String line = client.readStringUntil('\n');
+        Serial.println(line);
+        cel = line.toFloat();
+      }
+    }
+    client.stop();
+  }
+  else
+  {
+    Serial.println("connection failed!]");
+    client.stop();
+  }
+//  delay(5000);
+  return cel;
+}
+
 
 // connect to adafruit io via MQTT
 //void connect() {
@@ -191,19 +273,18 @@ void connect()
 
   Serial.print("Connecting to MQTT... ");
 
-  uint8_t retries = 3;
-  
+  // uint8_t retries = 3;
+
   while ((ret = mqtt.connect()) != 0) { // connect will return 0 for connected
     Serial.println(mqtt.connectErrorString(ret));
     Serial.println("");
     Serial.println("Retrying MQTT connection in 5 seconds...");
     mqtt.disconnect();
-    delay(5000);  // wait 5 seconds
-    retries--;
-    if (retries == 0) {
-      // basically die and wait for WDT to reset me
-      while (1);
-    }
+    delay(5000);
+    // retries--;
+    // if (retries == 0) {
+    //   while (1);
+    // }
   }
   Serial.println("MQTT Connected!");
 
