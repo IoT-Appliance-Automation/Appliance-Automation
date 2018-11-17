@@ -16,7 +16,7 @@ For illustration, we have used two basic electrical devices- Temperature Sensor 
 Consider the communication happening like this:
 1. A person says a voice command remotely on their Google Assistant (available on any android phone) for a specific appliance that is present at their home (ex: switch off light-1).
 2. Appropriate command(s)/data is sent to a server (a.k.a. broker server) that receives this data and processes it.
-3. Server sends this data to a master board that is connected to a WiFi at their home.  
+3. Server sends this data to a master board that is connected to a WiFi at their home.
 4. Master board sends this data to an appropriate device (to which the operation/data is intended).
 5. The operation takes place after the data reaches it's location (ie. a board that is connected to the appliance the person wants to switch on/off)
 
@@ -41,14 +41,25 @@ For communication between master-slave ESP8266 boards, we have implemented a Cli
 
 To send data, the master sends TCP packets to the required ESP8266 board (that is a slave).
 
-After the required ESP8266 board receives data, it does the required operation. For example, an ESP8266 board connected to a CFL receives an `ON` command, then it simply switches the CFL ON with the help of a Relay that is connected to ESP board and the CFL.  
-![alt text](https://github.com/IoT-Appliance-Automation/Appliance-Automation/blob/master/Images/Lights.jpg "Lights on") | ![alt text](https://github.com/IoT-Appliance-Automation/Appliance-Automation/blob/master/Images/TemperatureSensor.jpg "Temperature Sensor module") | 
-![alt text](https://github.com/IoT-Appliance-Automation/Appliance-Automation/blob/master/Images/Dashboard.png "Dashboard")
+After the required ESP8266 board receives data, it does the required operation. For example, an ESP8266 board connected to a CFL receives an `ON` command, then it simply switches the CFL ON with the help of a Relay that is connected to ESP board and the CFL.
+
+<img src="Images/Lights.jpg" alt="Lights" width="700" height="300"/>
+
+_**Lights on**_
+
+ <img src="Images/TemperatureSensor.jpg" alt="TemperatureSensor" width="700" height="300"/>
+
+_**Temperature Sensor**_
+
+ <img src="Images/Dashboard.png" alt="Dashboard">
+
+_**Dashboard**_
+
 
 
 ## What is the problem our project solves?
 1. The appliances can be operated from any remote place, regardless of whether a person is in the same network or not.
-2. The project solves the problem of manually checking if all the status of all the appliances,  
+2. The project solves the problem of manually checking if all the status of all the appliances,
 3. Because of the fact that MQTT Protocol is used for operating the devices, the reaction time of the request is dependent only on the speed of internet connnection of the configured mobile phone and WiFi connection to which the ESPs are connected.
 4. MQTT is faster as compared to HTTP:
    + We noted that HTTP takes around 7 seconds to react, where as MQTT takes maximum of 3 seconds.
