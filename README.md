@@ -42,8 +42,8 @@ For communication between master-slave ESP8266 boards, we have implemented a Cli
 To send data, the master sends TCP packets to the required ESP8266 board (that is a slave).
 
 After the required ESP8266 board receives data, it does the required operation. For example, an ESP8266 board connected to a CFL receives an `ON` command, then it simply switches the CFL ON with the help of a Relay that is connected to ESP board and the CFL.  
-![alt text](https://github.com/IoT-Appliance-Automation/Appliance-Automation/blob/master/Images/Lights.jpg  =200x100) | ![alt text](https://github.com/IoT-Appliance-Automation/Appliance-Automation/blob/master/Images/TemperatureSensor.jpg "Temperature Sensor module") | 
-![alt text](https://github.com/IoT-Appliance-Automation/Appliance-Automation/blob/master/Images/Dashboard.png "Dashboard")
+<img src="Images/Lights.jpg" alt="Lights" width="200"/> | <img src="Images/TemperatureSensor.jpg" alt="TemperatureSensor" width="200"/> | <img src="Images/Dashboard.png" alt="Dashboard">
+
 
 
 ## What is the problem our project solves?
