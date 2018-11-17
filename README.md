@@ -43,7 +43,7 @@ To send data, the master sends TCP packets to the required ESP8266 board (that i
 
 After the required ESP8266 board receives data, it does the required operation. For example, an ESP8266 board connected to a CFL receives an `ON` command, then it simply switches the CFL ON with the help of a Relay that is connected to ESP board and the CFL.  
 ![alt text](https://github.com/IoT-Appliance-Automation/Appliance-Automation/blob/master/Images/Lights.jpg "Lights on") | ![alt text](https://github.com/IoT-Appliance-Automation/Appliance-Automation/blob/master/Images/TemperatureSensor.jpg "Temperature Sensor module") | 
-![alt text](https://github.com/IoT-Appliance-Automation/Appliance-Automation/blob/master/Images/Dashboard.jpg "Dashboard")
+![alt text](https://github.com/IoT-Appliance-Automation/Appliance-Automation/blob/master/Images/Dashboard.png "Dashboard")
 
 
 ## What is the problem our project solves?
