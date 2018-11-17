@@ -27,6 +27,8 @@ Requirements for establishing communication:
 + Slaves ESPs and master ESP should be connected to the same network.
 
 #### Device Communication
+![alt text](https://github.com/IoT-Appliance-Automation/Appliance-Automation/blob/master/Images/process.png "Data Flow")
+
 Google Assistant API is used to send data from the mobile phone to the broker server.
 
 We have used **MQTT Protocol** for device communication- it is a very simple and robust protocol that is used for IoT device communication.
@@ -39,7 +41,10 @@ For communication between master-slave ESP8266 boards, we have implemented a Cli
 
 To send data, the master sends TCP packets to the required ESP8266 board (that is a slave).
 
-After the required ESP8266 board receives data, it does the required operation. For example, an ESP8266 board connected to a CFL receives an `OFF` command, then it simply switches the CFL OFF with the help of a Relay that is connected to ESP board and the CFL.  
+After the required ESP8266 board receives data, it does the required operation. For example, an ESP8266 board connected to a CFL receives an `ON` command, then it simply switches the CFL ON with the help of a Relay that is connected to ESP board and the CFL.  
+![alt text](https://github.com/IoT-Appliance-Automation/Appliance-Automation/blob/master/Images/Lights.jpg "Lights on") | ![alt text](https://github.com/IoT-Appliance-Automation/Appliance-Automation/blob/master/Images/TemperatureSensor.jpg "Temperature Sensor module") | 
+![alt text](https://github.com/IoT-Appliance-Automation/Appliance-Automation/blob/master/Images/Dashboard.jpg "Dashboard")
+
 
 ## What is the problem our project solves?
 1. The appliances can be operated from any remote place, regardless of whether a person is in the same network or not.
