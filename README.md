@@ -44,13 +44,16 @@ To send data, the master sends TCP packets to the required ESP8266 board (that i
 After the required ESP8266 board receives data, it does the required operation. For example, an ESP8266 board connected to a CFL receives an `ON` command, then it simply switches the CFL ON with the help of a Relay that is connected to ESP board and the CFL.
 
 <img src="Images/Lights.jpg" alt="Lights" width="700" height="300"/>
+
 _**Lights on**_
 
  <img src="Images/TemperatureSensor.jpg" alt="TemperatureSensor" width="700" height="300"/>
- _**Temperature Sensor**_
+
+_**Temperature Sensor**_
 
  <img src="Images/Dashboard.png" alt="Dashboard">
- _**Dashboard**_
+
+_**Dashboard**_
 
 
 
