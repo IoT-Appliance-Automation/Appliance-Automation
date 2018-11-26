@@ -3,7 +3,7 @@
 #define WLAN_PASS       "bloodraven"
 
 
-const int lamp_pin = LED_BUILTIN;
+const int lamp_pin = 5; //Output pin D1//
 
 WiFiServer server(80);
 
